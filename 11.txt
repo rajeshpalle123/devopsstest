@@ -1,0 +1,83 @@
+provider "aws" {
+access_key = "AKIAQL6JVCFXOYKHHOGU"
+secret_key = "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"
+region = "ap-northeast-2"
+}
+
+resource "aws_instance" "instance1" {
+ami = "ami-0454bb2fefc7de534"
+instance_type = "t2.micro"
+key_name = "hr07"
+ provisioner "local-exec" {
+    command = "echo 'instance_public_ip: ${aws_instance.instance1.public_ip}' >> /d/tf/por/ext.txt"
+  }
+}
+
+
+
+provider "aws" {
+    region = "ap-northeast-1"
+    access_key = "AKIAQL6JVCFXOAAOEYVK"
+    secret_key = "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"
+}
+
+resource "aws_instance" "secret" {
+    ami = "ami-088da9557aae42f39"
+    instance_type ="t2.micro"
+    key_name = "awstest"
+    tags = {
+        Name = "NewInstance"
+    }
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.secret.private_ip} >> private_ips.txt"
+  }
+}
+
+
+provider "aws" {
+access_key = "AKIAQL6JVCFXOAAOEYVK"
+secret_key = "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"
+region = "ap-northeast-1"
+}
+
+resource "aws_instance" "instance1" {
+ami = "ami-088da9557aae42f39"
+instance_type = "t2.micro"
+key_name = "awstest"
+ provisioner "local-exec" {
+    command = "echo 'instance_public_ip: ${aws_instance.instance1.public_ip}' >> ext.txt"
+  }
+}
+
+
+
+       #! /bin/bash
+       sudo apt-get update
+       sudo apt install wget unzip -y
+       apt install openjdk-11-jre-headless -y
+       wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.1.44547.zip
+       unzip sonarqube-8.9.1.44547.zip
+
+
+
+
+data "archive_file" "init" {
+  type        = "zip"
+  source_file = "./dockerinstall.zip"
+  output_path = "${path.module}/files/dockerinstall.zip"
+}
+
+
+
+
+resource "null_resource" "extract_my_zip" {
+  provisioner "local-exec" {
+    command = "unzip dockerinstall.zip"
+  }
+}
+
+
+
+instead of pem file we can pass like this ~/.ssh/id_rsa/authorized_keys
+
+
